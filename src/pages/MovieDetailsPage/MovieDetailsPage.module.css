@@ -1,0 +1,12 @@
+.wrapper {
+  display: flex;
+  gap: 40px;
+}
+
+.poster {
+  width: 300px;
+}
+
+.img {
+  min-width: 300px;
+}

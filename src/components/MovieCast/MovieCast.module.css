@@ -1,0 +1,23 @@
+.photo {
+  width: 120px;
+  height: 160px;
+  background-color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.castList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.img {
+  width: 120px;
+  height: 160px;
+  border-radius: 4px;
+}

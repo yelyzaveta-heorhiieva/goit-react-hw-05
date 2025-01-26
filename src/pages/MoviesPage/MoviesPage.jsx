@@ -1,23 +1,35 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MovieList from "../../components/MovieList/MovieList";
 import toast, { Toaster } from 'react-hot-toast';
+import ReactPaginate from 'react-paginate';
+import s from './MoviePage.module.css'
 
 const MoviesPage = ({ fetchData, isMovie }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const [searchData, setSearchData] = useState([]);
-  const [fetchTrigger, setFetchTrigger] = useState(false);
-   const [searchValue, setSearchValue] = useState(searchParams.get("query") || "");
+   const [searchValue, setSearchValue] = useState("");
   const [totalPages, setTotalPages] = useState(0);
-  const [page, setPage] = useState(1);
+  const [searchPage, setSearchPage] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
-       if (searchValue) {
-      fetchSearchMovies(searchValue, page);
-      navigate(`/movies?query=${searchValue}`, { replace: true });
+    const params = new URLSearchParams(location.search);
+    const query = params.get("query");
+    const page = params.get("page");
+
+    if (query) {
+      setSearchValue(query);
+      setSearchPage(page ? Number(page) : 1);
     }
-  }, [fetchTrigger, page ])
+  }, [location.search]);
+
+  useEffect(() => {
+       if (searchValue) {
+         fetchSearchMovies(searchValue, searchPage);
+      navigate(`/movies?query=${searchValue}&page=${searchPage}`, { replace: true });
+    }
+  }, [searchPage, searchValue, location.search])
+
 
   const handleSubmit = (evt) => {
     setSearchData([]);
@@ -26,32 +38,28 @@ const MoviesPage = ({ fetchData, isMovie }) => {
     if (input.value.trim() === '') {
      return toast.error("Please enter a request")
     }
-    setPage(1);
+    setSearchPage(1);
     setSearchValue(input.value.toLowerCase().trim());
-    setFetchTrigger(prev => !prev);
-    setSearchParams({ searchValue });
    evt.target.reset();
   };
 
-  async function fetchSearchMovies(query, searchPage) {
+  async function fetchSearchMovies(searchValue, searchPage) {
     try {
-      const url = `https://api.themoviedb.org/3/search/movie?query=${query}&page=${searchPage}`;
+      const url = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&page=${searchPage}`;
       const data = await fetchData(url);
       setTotalPages(data.total_pages);
-      setSearchData((prev) => [...prev, ...data.results])
+      setSearchData(() => [...data.results])  
       
-      console.log(data);
-       
     } catch (error) {
-        //  setError(true);
       } finally {
-      // setLoading(false);
+
       }
   }
-  
-  const loadMore = () => {
-   setPage((prevPage) => prevPage + 1);
- };
+
+  const handlePageClick = (event) => {
+    setSearchPage(() => (event.selected + 1)); 
+  };
+
 
   return (
     <div>
@@ -64,10 +72,21 @@ const MoviesPage = ({ fetchData, isMovie }) => {
         />          
         <button type="submit">Search</button>
       </form>
-       <Toaster position="top-right" reverseOrder={false} />
-
-      <MovieList data={searchData} isMovie={isMovie} />   
-      {searchData.length > 0 && totalPages > page && <button type="button" onClick={loadMore}>Load more</button>}
+      <Toaster position="top-right" reverseOrder={false} />
+      <MovieList data={searchData} isMovie={isMovie} />  
+     { searchData.length > 0 &&
+        <ReactPaginate
+        className={s.pagination}
+        breakLabel="..."
+        nextLabel=">"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={1}
+        pageCount={totalPages}
+        previousLabel="<"
+        initialPage={searchPage - 1}
+        pageClassName={s.item}
+      />}
     </div>
   )
 }

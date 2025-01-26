@@ -1,0 +1,21 @@
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.poster {
+  width: 200px;
+  height: 300px;
+  border: 1px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.img {
+  width: 200px;
+  height: 300px;
+}

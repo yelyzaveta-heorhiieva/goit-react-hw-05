@@ -11,9 +11,7 @@ useEffect(() => {
             try {
               const url = `https://api.themoviedb.org/3/movie/${movieId}/reviews`;
                 const data = await fetchData(url);
-              setReviewsData(data.results);
-              console.log(reviewsData.results);
-              
+              setReviewsData(data.results);        
             } catch (error) {
 
             }

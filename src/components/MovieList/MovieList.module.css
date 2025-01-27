@@ -2,7 +2,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   justify-items: center;
-  gap: 10px;
+  gap: 26px 10px;
+  margin-bottom: 30px;
 }
 
 .poster {
@@ -19,4 +20,61 @@
 .img {
   width: 260px;
   height: 360px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  gap: 8px;
+  @media screen and (min-width: 768px) {
+    font-size: 22px;
+  }
+}
+
+.sortSelect {
+  padding: 6px;
+  max-width: 320px;
+  outline: transparent;
+  border-radius: 4px;
+}
+
+.movieLink {
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2), 0 0 20px rgba(160, 160, 160, 0.4),
+    0 0 40px rgba(255, 255, 255, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  height: 420px;
+}
+
+.movieLink:hover {
+  transform: translateY(-15px) rotate(-2deg);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3), 0 0 25px rgba(200, 200, 200, 0.5),
+    0 0 50px rgba(255, 255, 255, 0.5);
+}
+
+.linkText {
+  max-width: 260px;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px;
+  text-align: center;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.3s ease;
+
+  @media screen and (min-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+.movieLink:hover .linkText {
+  color: #5746f0;
 }

@@ -4,6 +4,8 @@ import MovieList from "../../components/MovieList/MovieList";
 import toast, { Toaster } from 'react-hot-toast';
 import ReactPaginate from 'react-paginate';
 import s from './MoviePage.module.css'
+import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
+import { BsSearch } from "react-icons/bs";
 
 const MoviesPage = ({ fetchData, isMovie }) => {
   const [searchData, setSearchData] = useState([]);
@@ -61,32 +63,40 @@ const MoviesPage = ({ fetchData, isMovie }) => {
 
   const handlePageClick = (event) => {
     setSearchPage(() => (event.selected + 1)); 
+     window.scrollTo({
+      top: 0, 
+      behavior: "smooth", 
+    });
   };
 
   return (
     <section>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={s.form}>
         <input
+          className={s.input}
         type="text"
         autoComplete="off"
         autoFocus
         placeholder="Search movie"
         />          
-        <button type="submit">Search</button>
+        <button type="submit" className={s.btn}><BsSearch className={s.btnIcon} /></button>
       </form>
       <Toaster position="top-right" reverseOrder={false} />
-      { !totalResults && <p>No movies found for your request.</p>}
+      { !totalResults && <p className={s.notFound}>No movies found for your request.</p>}
       { searchData.length > 0 && <MovieList data={searchData} isMovie={isMovie} /> }
      { searchData.length > 0 &&
         <ReactPaginate
         className={s.pagination}
+        activeClassName={s.pageActive}
+        previousClassName={s.prevBtn}
+        nextClassName={s.nextBtn}
         breakLabel="..."
-        nextLabel=">"
+        nextLabel={<HiArrowSmRight className={s.icon} />}
         onPageChange={handlePageClick}
-        pageRangeDisplayed={3}
+        pageRangeDisplayed={1}
         marginPagesDisplayed={1}
         pageCount={totalPages}
-        previousLabel="<"
+        previousLabel={<HiArrowSmLeft className={s.icon} />}
         initialPage={searchPage - 1}
         pageClassName={s.item}
       />}

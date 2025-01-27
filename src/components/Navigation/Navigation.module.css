@@ -3,8 +3,33 @@
   padding: 20px;
   background-color: #5746f0;
   position: fixed;
+  right: 0;
   width: 100%;
-  font-size: 20px;
+  z-index: 999;
+}
+
+.navList {
+  display: flex;
   justify-content: space-around;
+  width: 1440px;
   font-weight: 700;
+  font-size: 20px;
+  margin: 0 auto;
+
+  @media screen and (min-width: 768px) {
+    font-size: 28px;
+  }
+}
+
+.link {
+  color: black;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: white;
+}
+
+.link.active {
+  color: white;
 }

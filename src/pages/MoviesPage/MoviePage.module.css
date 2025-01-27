@@ -1,11 +1,88 @@
 .pagination {
   display: flex;
-  gap: 16px;
+  gap: 4px;
   justify-content: center;
+  align-items: center;
   font-size: 20px;
   font-weight: 700;
+  @media screen and (min-width: 768px) {
+    gap: 14px;
+  }
 }
 
-.item {
+.item a {
   cursor: pointer;
+  padding: 8px;
+  font-size: 20px;
+  @media screen and (min-width: 768px) {
+    font-size: 30px;
+  }
+}
+
+.pageActive {
+  color: #5746f0;
+  background-color: #fff;
+}
+
+.prevBtn,
+.nextBtn {
+  color: #5746f0;
+  cursor: pointer;
+  @media screen and (min-width: 768px) {
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  @media screen and (min-width: 768px) {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+.form {
+  border-radius: 4px;
+  border: 1px solid black;
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  outline: transparent;
+  border: none;
+  border-radius: 4px;
+  font-size: 18px;
+  @media screen and (min-width: 768px) {
+    font-size: 22px;
+  }
+}
+
+.btn {
+  background-color: transparent;
+  margin-right: 20px;
+  transition: color 0.3s ease;
+}
+
+.btnIcon {
+  width: 20px;
+  height: 20px;
+  @media screen and (min-width: 768px) {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.btn:hover .btnIcon {
+  color: #5746f0;
+}
+
+.notFound {
+  font-size: 26px;
+  margin-top: 60px;
+  text-align: center;
 }

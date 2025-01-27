@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ShowMoreText from "react-show-more-text";
 import toast, { Toaster } from 'react-hot-toast';
+import s from './MovieReviews.module.css'
 
 const MovieReviews = ({fetchData}) => {
   const { movieId } = useParams();
@@ -27,15 +28,14 @@ useEffect(() => {
          <Toaster position="top-right" reverseOrder={false} />
          {!totalResults && <p>We don't have any reviews for this movie.</p>}
          {reviewsData.length > 0 &&
-           (<ul>
+           (<ul className={s.list}> 
              {reviewsData.map(({ author, content, id }) =>
-               <li key={id}>
+               <li key={id} className={s.item}>
                  <h3>{author}</h3>
                  <ShowMoreText
                    lines={3}
                    more="Show more"
                    less="Show less"
-                   // className="content-css"
                    anchorClass="show-more-less-clickable"
                    truncatedEndingComponent={"... "}
                  ><p>{content}</p></ShowMoreText>

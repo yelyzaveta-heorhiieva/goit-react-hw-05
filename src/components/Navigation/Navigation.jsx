@@ -11,12 +11,18 @@ const Navigation = () => {
   
   return (
       <nav className={s.nav}>
-        <NavLink to="/" className={buildLinkClass}>
-          Home
-        </NavLink>
-        <NavLink to="/movies" className={buildLinkClass}>
-          Movies
-        </NavLink>
+        <ul className={s.navList}>
+          <li>
+            <NavLink to="/" className={buildLinkClass}>
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/movies" className={buildLinkClass}>
+              Movies
+            </NavLink>
+          </li>
+        </ul>
       </nav>
   )
 }

@@ -1,12 +1,13 @@
 .list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  justify-items: center;
+  gap: 10px;
 }
 
 .poster {
-  width: 200px;
-  height: 300px;
+  width: 260px;
+  height: 360px;
   border: 1px solid red;
   display: flex;
   justify-content: center;
@@ -16,6 +17,6 @@
 }
 
 .img {
-  width: 200px;
-  height: 300px;
+  width: 260px;
+  height: 360px;
 }

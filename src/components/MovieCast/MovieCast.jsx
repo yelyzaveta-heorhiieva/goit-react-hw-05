@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import s from './MovieCast.module.css'
+import toast, { Toaster } from 'react-hot-toast';
 
 const MovieCast = ({fetchData}) => {
   const { movieId } = useParams();
@@ -8,20 +9,20 @@ const MovieCast = ({fetchData}) => {
   
 useEffect(() => {   
         const fetchCast = async () => {
-            try {
+          try {
               const url = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
                 const data = await fetchData(url);
-              setCastData(data.cast);
-              
+            setCastData(data.cast);
             } catch (error) {
-
-            }
+             return toast.error("Request failed!")
+            } 
         }
         fetchCast();
     }, []);
 
   return (
     <ul className={s.castList}>
+      <Toaster position="top-right" reverseOrder={false} />
       { castData.map(({id, profile_path, character, original_name }) => {
         return (
           <li key={id}>

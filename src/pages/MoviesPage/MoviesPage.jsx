@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import MovieList from "../../components/MovieList/MovieList";
 import toast, { Toaster } from 'react-hot-toast';
@@ -10,7 +10,10 @@ const MoviesPage = ({ fetchData, isMovie }) => {
    const [searchValue, setSearchValue] = useState("");
   const [totalPages, setTotalPages] = useState(0);
   const [searchPage, setSearchPage] = useState(1);
+   const [totalResults, setTotalResults] = useState(1);
+  const [fetchTrigger, setFetchTrigger] = useState(false);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -28,7 +31,7 @@ const MoviesPage = ({ fetchData, isMovie }) => {
          fetchSearchMovies(searchValue, searchPage);
       navigate(`/movies?query=${searchValue}&page=${searchPage}`, { replace: true });
     }
-  }, [searchPage, searchValue, location.search])
+  }, [searchPage, searchValue, fetchTrigger])
 
 
   const handleSubmit = (evt) => {
@@ -39,6 +42,7 @@ const MoviesPage = ({ fetchData, isMovie }) => {
      return toast.error("Please enter a request")
     }
     setSearchPage(1);
+    setFetchTrigger((prev) => !prev)
     setSearchValue(input.value.toLowerCase().trim());
    evt.target.reset();
   };
@@ -48,21 +52,19 @@ const MoviesPage = ({ fetchData, isMovie }) => {
       const url = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&page=${searchPage}`;
       const data = await fetchData(url);
       setTotalPages(data.total_pages);
-      setSearchData(() => [...data.results])  
-      
+      setSearchData(() => [...data.results]);
+      setTotalResults(data.total_results);
     } catch (error) {
-      } finally {
-
-      }
+        return toast.error("Request failed!")
+      } 
   }
 
   const handlePageClick = (event) => {
     setSearchPage(() => (event.selected + 1)); 
   };
 
-
   return (
-    <div>
+    <section>
       <form onSubmit={handleSubmit}>
         <input
         type="text"
@@ -73,7 +75,8 @@ const MoviesPage = ({ fetchData, isMovie }) => {
         <button type="submit">Search</button>
       </form>
       <Toaster position="top-right" reverseOrder={false} />
-      <MovieList data={searchData} isMovie={isMovie} />  
+      { !totalResults && <p>No movies found for your request.</p>}
+      { searchData.length > 0 && <MovieList data={searchData} isMovie={isMovie} /> }
      { searchData.length > 0 &&
         <ReactPaginate
         className={s.pagination}
@@ -87,7 +90,7 @@ const MoviesPage = ({ fetchData, isMovie }) => {
         initialPage={searchPage - 1}
         pageClassName={s.item}
       />}
-    </div>
+    </section>
   )
 }
 

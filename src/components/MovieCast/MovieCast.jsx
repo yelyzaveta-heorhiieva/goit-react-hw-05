@@ -32,7 +32,9 @@ useEffect(() => {
       <Swiper
       modules={[Scrollbar, Keyboard, Mousewheel]}
       spaceBetween={10}
-        scrollbar={{ draggable: true }}
+        scrollbar={{
+          draggable: true,
+        el:`.${s.scrollbar}`}}
         slidesPerView='auto'
         keyboard={{ enabled: true, onlyInViewport: true, }}
         mousewheel={true}
@@ -45,7 +47,8 @@ useEffect(() => {
                 <h3>{original_name}</h3>
                 <p>{character}</p>
               </SwiperSlide>)
-          } )}
+          })}
+        <div className={s.scrollbar}></div>
         </Swiper>
   </>
   )

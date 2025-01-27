@@ -26,7 +26,7 @@ useEffect(() => {
      return (
        <div>
          <Toaster position="top-right" reverseOrder={false} />
-         {!totalResults && <p>We don't have any reviews for this movie.</p>}
+         {!totalResults && <p className={s.noRewiews}>We don't have any reviews for this movie.</p>}
          {reviewsData.length > 0 &&
            (<ul className={s.list}> 
              {reviewsData.map(({ author, content, id }) =>
@@ -36,7 +36,7 @@ useEffect(() => {
                    lines={3}
                    more="Show more"
                    less="Show less"
-                   anchorClass="show-more-less-clickable"
+                   anchorClass={s.moreText}
                    truncatedEndingComponent={"... "}
                  ><p>{content}</p></ShowMoreText>
                </li>

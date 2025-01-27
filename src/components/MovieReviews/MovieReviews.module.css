@@ -13,3 +13,13 @@
   gap: 8px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
+.moreText {
+  color: #5746f0;
+}
+
+.noRewiews {
+  font-size: 26px;
+  margin-top: 60px;
+  text-align: center;
+}

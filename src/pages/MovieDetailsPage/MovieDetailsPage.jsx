@@ -33,8 +33,9 @@ const MovieDetailsPage = ({fetchData}) => {
         <Toaster position="top-right" reverseOrder={false} />
         <Link to={backLinkHref} className={s.backLink}><FaArrowLeftLong />Go back</Link>
      <div className={s.wrapper}>
-        <div className={s.poster}>
-          <img className={s.img} src={`https://image.tmdb.org/t/p/w500${detailData.poster_path}`} alt={detailData.title} />
+          <div className={s.poster}>
+            {detailData.poster_path ? <img className={s.img} src={`https://image.tmdb.org/t/p/w500${detailData.poster_path}`}
+              alt={detailData.title} /> : <div className={s.noImg}>No image available</div> }
         </div>
         <div className={s.content}>
           <h2 className={s.title}>{`${detailData.title} (${detailData.release_date.slice(0, 4)})`}</h2>

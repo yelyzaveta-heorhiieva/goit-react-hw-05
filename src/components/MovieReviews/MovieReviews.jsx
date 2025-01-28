@@ -7,7 +7,7 @@ import s from './MovieReviews.module.css'
 const MovieReviews = ({fetchData}) => {
   const { movieId } = useParams();
   const [reviewsData, setReviewsData] = useState([]);
-  const [totalResults, setTotalResults] = useState(1);
+  const [isFetching, setIsFetching] = useState(true);
   
 useEffect(() => {   
         const fetchCast = async () => {
@@ -15,18 +15,19 @@ useEffect(() => {
               const url = `https://api.themoviedb.org/3/movie/${movieId}/reviews`;
                 const data = await fetchData(url);
               setReviewsData(data.results);    
-              setTotalResults(data.total_results);
             } catch (error) {
                return toast.error("Request failed!")
+            } finally {
+              setIsFetching(false)
             }
         }
         fetchCast();
-}, []);
+}, [movieId]);
 
      return (
        <div>
          <Toaster position="top-right" reverseOrder={false} />
-         {!totalResults && <p className={s.noRewiews}>We don't have any reviews for this movie.</p>}
+         {!isFetching && reviewsData.length <= 0 && <p className={s.noRewiews}>We don't have any reviews for this movie.</p>}
          {reviewsData.length > 0 &&
            (<ul className={s.list}> 
              {reviewsData.map(({ author, content, id }) =>

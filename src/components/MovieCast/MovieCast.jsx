@@ -11,6 +11,7 @@ import 'swiper/css/scrollbar';
 const MovieCast = ({fetchData}) => {
   const { movieId } = useParams();
   const [castData, setCastData] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
   
 useEffect(() => {   
         const fetchCast = async () => {
@@ -20,36 +21,40 @@ useEffect(() => {
             setCastData(data.cast);
             } catch (error) {
              return toast.error("Request failed!")
-            } 
+          } finally {
+            setIsFetching(false);
+            }
         }
         fetchCast();
-}, []);
+}, [movieId]);
     
 
   return (
   <>
-    <Toaster position="top-right" reverseOrder={false} />
-      <Swiper
-      modules={[Scrollbar, Keyboard, Mousewheel]}
-      spaceBetween={10}
+      <Toaster position="top-right" reverseOrder={false} />
+      {!isFetching && castData.length <= 0 && <p className={s.noCast}>We don't have any information about cast for this movie.</p>}
+      {castData.length > 0 && <Swiper
+        modules={[Scrollbar, Keyboard, Mousewheel]}
+        spaceBetween={10}
         scrollbar={{
           draggable: true,
-        el:`.${s.scrollbar}`}}
+          el: `.${s.scrollbar}`
+        }}
         slidesPerView='auto'
         keyboard={{ enabled: true, onlyInViewport: true, }}
         mousewheel={true}
-      className={s.castList}>
-          { castData.map(({id, profile_path, character, original_name }) => {
-            return (
-              <SwiperSlide key={id} className={s.slide}>
-                {profile_path ? <img src={`https://image.tmdb.org/t/p/w500${profile_path}`} alt={original_name} className={s.img} />
-                  : <div className={s.photo}>No image</div>}
-                <h3>{original_name}</h3>
-                <p>{character}</p>
-              </SwiperSlide>)
-          })}
+        className={s.castList}>
+        {castData.map(({ id, profile_path, character, original_name }) => {
+          return (
+            <SwiperSlide key={id} className={s.slide}>
+              {profile_path ? <img src={`https://image.tmdb.org/t/p/w500${profile_path}`} alt={original_name} className={s.img} />
+                : <div className={s.photo}>No image</div>}
+              <h3>{original_name}</h3>
+              <p>{character}</p>
+            </SwiperSlide>)
+        })}
         <div className={s.scrollbar}></div>
-        </Swiper>
+      </Swiper>} 
   </>
   )
 }

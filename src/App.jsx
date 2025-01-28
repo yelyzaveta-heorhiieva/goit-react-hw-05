@@ -34,7 +34,7 @@ function App() {
       <>
         <Navigation />
         <Toaster position="top-right" reverseOrder={false} />
-        <Suspense fallback={<div>Loading page...</div>}></Suspense>
+        <Suspense fallback={<div>Loading page...</div>}>
         <Routes>
           <Route path="/" element={<HomePage fetchData={fetchData} isMovie={true} />} />
           <Route path="/movies" element={<MoviesPage fetchData={fetchData} isMovie={false} />} />
@@ -43,8 +43,8 @@ function App() {
             <Route path="reviews" element={<MovieReviews fetchData={fetchData} />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-      {/* {error && <p>Request Failed</p>} */}
+        </Routes>
+        </Suspense>
       </>
   )
 }

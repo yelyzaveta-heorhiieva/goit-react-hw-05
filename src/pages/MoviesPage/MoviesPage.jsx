@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import MovieList from "../../components/MovieList/MovieList";
 import toast, { Toaster } from 'react-hot-toast';
 import ReactPaginate from 'react-paginate';
@@ -8,30 +8,35 @@ import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
 import { BsSearch } from "react-icons/bs";
 
 const MoviesPage = ({ fetchData, isMovie }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchData, setSearchData] = useState([]);
    const [searchValue, setSearchValue] = useState("");
   const [totalPages, setTotalPages] = useState(0);
   const [searchPage, setSearchPage] = useState(1);
    const [totalResults, setTotalResults] = useState(1);
   const [fetchTrigger, setFetchTrigger] = useState(false);
-  const navigate = useNavigate();
-  
+
+  const updateSearchParams = (params) => {
+  const updatedParams = new URLSearchParams(searchParams); 
+  Object.entries(params).forEach(([key, value]) => {
+    updatedParams.set(key, value); 
+  });
+  setSearchParams(updatedParams);
+};
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const query = params.get("query");
-    const page = params.get("page");
-
-    if (query) {
+      const query = searchParams.get("query");
+      const page = searchParams.get("page");
+     if (query) {
       setSearchValue(query);
       setSearchPage(page ? Number(page) : 1);
     }
-  }, [location.search]);
+  }, [searchParams]);
 
   useEffect(() => {
-       if (searchValue) {
-         fetchSearchMovies(searchValue, searchPage);
-      navigate(`/movies?query=${searchValue}&page=${searchPage}`, { replace: true });
+    if (searchValue) {
+      fetchSearchMovies(searchValue, searchPage);
+    updateSearchParams({ query: searchValue, page: searchPage });
     }
   }, [searchPage, searchValue, fetchTrigger])
 

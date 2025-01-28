@@ -9,8 +9,14 @@ const MovieList = ({ data, isMovie }) => {
   const [movie, setMovie] = useState([]);
 
   const Sort = (value) => {
-    const sortMovie = [...data].toSorted((a, b) => value === "release_date" ? (b[value]).slice(0, 4) - (a[value]).slice(0, 4)
-      : b[value] - a[value]);
+    const sortMovie = [...data].sort((a, b) => {
+      if (value === "release_date") {
+        const dateA = new Date(a[value]);
+        const dateB = new Date(b[value]);
+        return dateB - dateA;
+      }
+      return b[value] - a[value]
+    });
     setMovie(() => sortMovie)
   }
 

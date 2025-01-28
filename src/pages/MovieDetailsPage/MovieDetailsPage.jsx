@@ -1,5 +1,5 @@
 import { useParams, Link, NavLink, Outlet, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import s from "./MovieDetailsPage.module.css"
 import toast, { Toaster } from 'react-hot-toast';
 import { FaArrowLeftLong } from "react-icons/fa6";
@@ -13,7 +13,8 @@ const MovieDetailsPage = ({fetchData}) => {
   const { movieId } = useParams();
   const [detailData, setDetailData] = useState({});
   const location = useLocation();
-   const backLinkHref = location.state ?? '/movies';
+  const backLinkHref = location.state ?? '/movies';
+  const linkRef = useRef(backLinkHref);
 
     useEffect(() => {   
         const fetchDetailMovies = async () => {
@@ -31,7 +32,7 @@ const MovieDetailsPage = ({fetchData}) => {
     return (detailData && Object.keys(detailData).length > 0) && (
       <section>
         <Toaster position="top-right" reverseOrder={false} />
-        <Link to={backLinkHref} className={s.backLink}><FaArrowLeftLong />Go back</Link>
+        <Link to={backLinkHref} ref={linkRef} className={s.backLink}><FaArrowLeftLong />Go back</Link>
      <div className={s.wrapper}>
           <div className={s.poster}>
             {detailData.poster_path ? <img className={s.img} src={`https://image.tmdb.org/t/p/w500${detailData.poster_path}`}
@@ -43,7 +44,7 @@ const MovieDetailsPage = ({fetchData}) => {
           <ul className={s.infoList}>
             <li className={s.listItem}>
               <h3>Overview</h3>
-              <p>{detailData.overview}</p>
+              <p>{detailData.overview ? detailData.overview : 'There are not information'}</p>
             </li>
             <li className={s.listItem}>
               <h3>Genres</h3>

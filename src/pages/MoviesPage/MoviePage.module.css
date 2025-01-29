@@ -65,12 +65,12 @@
 .btn {
   background-color: transparent;
   margin-right: 20px;
-  transition: color 0.3s ease;
 }
 
 .btnIcon {
   width: 20px;
   height: 20px;
+  transition: color 0.3s ease;
   @media screen and (min-width: 768px) {
     width: 30px;
     height: 30px;

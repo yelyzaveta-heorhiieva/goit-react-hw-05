@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import ShowMoreText from "react-show-more-text";
 import toast, { Toaster } from 'react-hot-toast';
 import s from './MovieReviews.module.css'
+import { fetchData } from "../../services/api";
 
-const MovieReviews = ({fetchData}) => {
+const MovieReviews = () => {
   const { movieId } = useParams();
   const [reviewsData, setReviewsData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
@@ -26,7 +27,6 @@ useEffect(() => {
 
      return (
        <div>
-         <Toaster position="top-right" reverseOrder={false} />
          {!isFetching && reviewsData.length <= 0 && <p className={s.noRewiews}>We don't have any reviews for this movie.</p>}
          {reviewsData.length > 0 &&
            (<ul className={s.list}> 

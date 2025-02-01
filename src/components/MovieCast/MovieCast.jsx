@@ -6,9 +6,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Keyboard, Mousewheel, Scrollbar} from 'swiper/modules';
 import "swiper/css";
 import 'swiper/css/scrollbar';
+import { fetchData } from "../../services/api";
 
 
-const MovieCast = ({fetchData}) => {
+const MovieCast = () => {
   const { movieId } = useParams();
   const [castData, setCastData] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
@@ -31,7 +32,6 @@ useEffect(() => {
 
   return (
   <>
-      <Toaster position="top-right" reverseOrder={false} />
       {!isFetching && castData.length <= 0 && <p className={s.noCast}>We don't have any information about cast for this movie.</p>}
       {castData.length > 0 && <Swiper
         modules={[Scrollbar, Keyboard, Mousewheel]}

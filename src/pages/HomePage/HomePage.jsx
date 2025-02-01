@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import MovieList from "../../components/MovieList/MovieList";
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import s from './HomePage.module.css'
+import { fetchData } from "../../services/api";
 
-const Homepage = ({fetchData, isMovie }) => {
+const Homepage = ({isMovie }) => {
     const [trendingData, setTrendingData] = useState([]);
     
     useEffect(() => {   
-        const fetchTrendingMovies = async () => {
+      const fetchTrendingMovies= async () => {
             try {
               const url = "https://api.themoviedb.org/3/trending/movie/day?language=en-US";
-              const data = await fetchData(url);
-              setTrendingData(data.results);
+              const {results} = await fetchData(url);
+              setTrendingData(results);
             } catch (error) {
                return toast.error("Request failed!")
             }
@@ -22,7 +23,6 @@ const Homepage = ({fetchData, isMovie }) => {
   return (
     <section>
       <h1 className={s.title}>Trending today</h1>
-      <Toaster position="top-right" reverseOrder={false} />
       { trendingData.length > 0 && <MovieList data={trendingData} isMovie={isMovie} />    } 
     </section>
   )

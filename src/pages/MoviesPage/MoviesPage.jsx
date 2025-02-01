@@ -6,15 +6,15 @@ import ReactPaginate from 'react-paginate';
 import s from './MoviePage.module.css'
 import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
 import { BsSearch } from "react-icons/bs";
+import { fetchData } from "../../services/api";
 
-const MoviesPage = ({ fetchData, isMovie }) => {
+const MoviesPage = ({isMovie }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchData, setSearchData] = useState([]);
    const [searchValue, setSearchValue] = useState("");
   const [totalPages, setTotalPages] = useState(0);
   const [searchPage, setSearchPage] = useState(1);
    const [totalResults, setTotalResults] = useState(1);
-  const [fetchTrigger, setFetchTrigger] = useState(false);
 
   const updateSearchParams = (params) => {
   const updatedParams = new URLSearchParams(searchParams); 
@@ -35,26 +35,7 @@ const MoviesPage = ({ fetchData, isMovie }) => {
 
   useEffect(() => {
     if (searchValue) {
-      fetchSearchMovies(searchValue, searchPage);
-    updateSearchParams({ query: searchValue, page: searchPage });
-    }
-  }, [searchPage, searchValue, fetchTrigger])
-
-
-  const handleSubmit = (evt) => {
-    setSearchData([]);
-    evt.preventDefault();
-    const [input] = evt.target.elements;
-    if (input.value.trim() === '') {
-     return toast.error("Please enter a request")
-    }
-    setSearchPage(1);
-    setFetchTrigger((prev) => !prev)
-    setSearchValue(input.value.toLowerCase().trim());
-   evt.target.reset();
-  };
-
-  async function fetchSearchMovies(searchValue, searchPage) {
+       async function fetchSearchMovies(searchValue, searchPage) {
     try {
       const url = `https://api.themoviedb.org/3/search/movie?query=${searchValue}&page=${searchPage}`;
       const data = await fetchData(url);
@@ -65,6 +46,24 @@ const MoviesPage = ({ fetchData, isMovie }) => {
         return toast.error("Request failed!")
       } 
   }
+      fetchSearchMovies(searchValue, searchPage);
+    updateSearchParams({ query: searchValue, page: searchPage });
+    }
+  }, [searchPage, searchValue])
+
+
+  const handleSubmit = (evt) => {
+    setSearchData([]);
+    evt.preventDefault();
+    const [input] = evt.target.elements;
+    if (input.value.trim() === '') {
+     return toast.error("Please enter a request")
+    }
+    setSearchPage(1);
+    setSearchValue(input.value.toLowerCase().trim());
+   evt.target.reset();
+  };
+
 
   const handlePageClick = (event) => {
     setSearchPage(() => (event.selected + 1)); 
@@ -86,7 +85,6 @@ const MoviesPage = ({ fetchData, isMovie }) => {
         />          
         <button type="submit" className={s.btn}><BsSearch className={s.btnIcon} /></button>
       </form>
-      <Toaster position="top-right" reverseOrder={false} />
       { !totalResults && <p className={s.notFound}>No movies found for your request.</p>}
       { searchData.length > 0 && <MovieList data={searchData} isMovie={isMovie} /> }
      { searchData.length > 0 &&

@@ -1,15 +1,16 @@
 import { useParams, Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import s from "./MovieDetailsPage.module.css"
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { FaArrowLeftLong } from "react-icons/fa6";
 import clsx from 'clsx';
+import { fetchData } from "../../services/api";
 
   const buildLinkClass = ({ isActive }) => {
   return clsx(s.link, isActive && s.active);
     };
 
-const MovieDetailsPage = ({fetchData}) => {
+const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [detailData, setDetailData] = useState({});
   const location = useLocation();
@@ -31,7 +32,6 @@ const MovieDetailsPage = ({fetchData}) => {
 
     return (detailData && Object.keys(detailData).length > 0) && (
       <section>
-        <Toaster position="top-right" reverseOrder={false} />
         <Link to={backLinkHref} ref={linkRef} className={s.backLink}><FaArrowLeftLong />Go back</Link>
      <div className={s.wrapper}>
           <div className={s.poster}>
